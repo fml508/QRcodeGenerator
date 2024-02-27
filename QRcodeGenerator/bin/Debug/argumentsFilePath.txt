@@ -1,1 +1,0 @@
-WPA2 NULL NULL
