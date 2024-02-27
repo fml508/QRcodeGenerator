@@ -195,8 +195,9 @@ namespace QRcodeGenerator
 
         private string FindLatestQRCode()
         {
-            string directoryPath = Application.StartupPath;
+            string directoryPath = Path.Combine(Application.StartupPath, "..", "..", "..", "QRcodes");
             string[] files = Directory.GetFiles(directoryPath, "BUUUUUU_*.png");
+
 
             if (files.Length > 0)
             {
