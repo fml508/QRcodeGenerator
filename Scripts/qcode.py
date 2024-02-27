@@ -28,11 +28,13 @@ def generate_qr_code(arg1, arg2, arg3):
 
     filename = f"BUUUUUU_{timestamp}.png"
     directory = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+    directory = os.path.join(directory, "..", "QRcodes")
     print(directory)
     os.makedirs(directory, exist_ok=True)
     
     finalfilename = os.path.join(directory, f"BUUUUUU_{timestamp}.png")
     img.save(finalfilename)
+    
     schedule_deletion(finalfilename)
 
 
@@ -48,6 +50,7 @@ def nothing( sch, dela):
 def delete_old_qr_code(scheduler, delay, finalfilename):
    
     directory = os.path.dirname(os.path.realpath(__file__))
+    directory = os.path.join(directory, "..", "QRcodes")
     
     for filename in os.listdir(directory):
         print(f"debug::: {filename}")
