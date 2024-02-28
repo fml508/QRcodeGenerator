@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -80,30 +80,16 @@ namespace QRcodeGenerator
                     displayForm.ShowDialog();
 
                 }
-            }
-
-            try
-            {
-                File.Delete(latestQRCodeFile);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-            }
-
-            finally
-            {
-                if (latestQRCodeFile == null)
-                {
-                    // -.-
-                }
-                else
+                try
                 {
                     File.Delete(latestQRCodeFile);
                 }
-                
-            }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine(e);
+                    //File.Delete(latestQRCodeFile);
+                }
 
         }
         private void Selected()
@@ -208,7 +194,7 @@ namespace QRcodeGenerator
 
         private string FindLatestQRCode()
         {
-            string directoryPath = Path.Combine(Application.StartupPath, "..", "..", "..", "QRcodes");
+            string directoryPath = Path.Combine(Application.StartupPath, "QRcodes");
             string[] files = Directory.GetFiles(directoryPath, "BUUUUUU_*.png");
 
 
@@ -232,17 +218,17 @@ namespace QRcodeGenerator
             string arg1 = textBox1.Text;
             string arg2 = textBox2.Text;
             string arg3 = textBox3.Text;
-            string pythonScriptPath = Path.Combine(Application.StartupPath, "qcode.py");
-            
-            
-            //TEMP SOLUTION: seems permanent af
-            string argumentsFilePath = Path.Combine(Application.StartupPath, "arguments.txt");
-            File.WriteAllText(argumentsFilePath, $"{arg1} {arg2} {arg3}");
 
+            //TEMP SOLUTION: seems permanent af
+            string pythonScriptPath = Path.Combine(Application.StartupPath,"Scripts","qcode.py");
+            string argumentsFilePath = Path.Combine(Application.StartupPath,"Scripts","arguments.txt");
+
+            File.WriteAllText(argumentsFilePath, $"{arg1} {arg2} {arg3}");
+            string argumentsContent = $"{arg1} {arg2} {arg3}";
             using (Process process = new Process())
             {
                 process.StartInfo.FileName = "python.exe";
-                process.StartInfo.Arguments = $"{pythonScriptPath} @{argumentsFilePath}";
+                process.StartInfo.Arguments = $"{pythonScriptPath} {argumentsContent}";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.CreateNoWindow = true;
