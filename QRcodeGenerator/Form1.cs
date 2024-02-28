@@ -94,7 +94,15 @@ namespace QRcodeGenerator
 
             finally
             {
-                File.Delete(latestQRCodeFile);
+                if (latestQRCodeFile == null)
+                {
+                    // -.-
+                }
+                else
+                {
+                    File.Delete(latestQRCodeFile);
+                }
+                
             }
 
         }
@@ -225,7 +233,9 @@ namespace QRcodeGenerator
             string arg2 = textBox2.Text;
             string arg3 = textBox3.Text;
             string pythonScriptPath = Path.Combine(Application.StartupPath, "qcode.py");
-            //TEMP SOLUTION:
+            
+            
+            //TEMP SOLUTION: seems permanent af
             string argumentsFilePath = Path.Combine(Application.StartupPath, "arguments.txt");
             File.WriteAllText(argumentsFilePath, $"{arg1} {arg2} {arg3}");
 
@@ -239,9 +249,6 @@ namespace QRcodeGenerator
                 process.StartInfo.RedirectStandardError = true;
 
                 process.Start();
-
-
-
                 process.WaitForExit();
 
                 QrCodeShowBox();

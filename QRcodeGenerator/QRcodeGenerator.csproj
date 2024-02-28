@@ -13,6 +13,13 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
+  <PropertyGroup>
+    <GenerateResourceMSBuildArchitecture>CurrentArchitecture</GenerateResourceMSBuildArchitecture>
+    <GenerateResourceMSBuildRuntime>CurrentRuntime</GenerateResourceMSBuildRuntime>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePublishManifestFiles>false</GeneratePublishManifestFiles>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +47,15 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+  <Target Name="CreatePythonFolders" AfterTargets="Build">
+    <MakeDir Directories="$(OutputPath)\Scripts" />
+    <MakeDir Directories="$(OutputPath)\QRcodes"/>
+  </Target>
+  <Target Name="CopyPythonFiles" AfterTargets="CreatePythonFolders">
+    <Copy SourceFiles="..\Scripts\qcode.py;..\Scripts\Setup.py"
+          DestinationFolder="$(OutputPath)\Scripts" />
+  </Target>
+
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

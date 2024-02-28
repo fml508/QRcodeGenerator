@@ -139,7 +139,7 @@ namespace QRcodeGenerator
         #endregion
 
         
-        private System.Windows.Forms.Label label1;
+        
         private ComboBox comboBox2;
         private Label label2;
         private TextBox textBox1;
