@@ -29,7 +29,7 @@ namespace QRcodeGenerator
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            isReady();
+            IsReady();
         }
 
         private void TurnOffAll()
@@ -67,10 +67,13 @@ namespace QRcodeGenerator
 
 
                     Form displayForm = new Form();
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Image = image;
-                    pictureBox.Dock = DockStyle.Fill;
-                    pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                    PictureBox pictureBox = new PictureBox
+                    {
+                        Image = image,
+                        Dock = DockStyle.Fill,
+                        SizeMode = PictureBoxSizeMode.AutoSize
+                    };
+
                     displayForm.Controls.Add(pictureBox);
 
                     displayForm.ClientSize = new Size(imageWidth, imageHeight);
@@ -95,7 +98,7 @@ namespace QRcodeGenerator
             }
 
         }
-        private void selected()
+        private void Selected()
         {
             if (comboBox2.SelectedIndex == 0)
             {
@@ -142,7 +145,7 @@ namespace QRcodeGenerator
         }
 
 
-        private void isReady()
+        private void IsReady()
         {
             if (comboBox2.SelectedIndex == 0)
             {
@@ -162,7 +165,7 @@ namespace QRcodeGenerator
         {
             ResetTextboxes();
             TurnOffAll();
-            selected();
+            Selected();
         }
 
 
@@ -170,12 +173,14 @@ namespace QRcodeGenerator
         {
             try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = "python.exe";
-                startInfo.Arguments = "--version";
-                startInfo.RedirectStandardOutput = true;
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = "python.exe",
+                    Arguments = "--version",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
 
                 using (Process process = new Process())
                 {
@@ -240,7 +245,7 @@ namespace QRcodeGenerator
                 process.WaitForExit();
 
                 QrCodeShowBox();
-                
+
                 ResetTextboxes();
             }
 
