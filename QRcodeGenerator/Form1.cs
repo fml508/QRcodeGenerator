@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -29,7 +29,7 @@ namespace QRcodeGenerator
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            isReady();
+            IsReady();
         }
 
         private void TurnOffAll()
@@ -67,10 +67,13 @@ namespace QRcodeGenerator
 
 
                     Form displayForm = new Form();
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Image = image;
-                    pictureBox.Dock = DockStyle.Fill;
-                    pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                    PictureBox pictureBox = new PictureBox
+                    {
+                        Image = image,
+                        Dock = DockStyle.Fill,
+                        SizeMode = PictureBoxSizeMode.AutoSize
+                    };
+
                     displayForm.Controls.Add(pictureBox);
 
                     displayForm.ClientSize = new Size(imageWidth, imageHeight);
@@ -88,14 +91,8 @@ namespace QRcodeGenerator
                     //File.Delete(latestQRCodeFile);
                 }
 
-
-            }
-
-           
-
-
         }
-        private void selected()
+        private void Selected()
         {
             if (comboBox2.SelectedIndex == 0)
             {
@@ -142,7 +139,7 @@ namespace QRcodeGenerator
         }
 
 
-        private void isReady()
+        private void IsReady()
         {
             if (comboBox2.SelectedIndex == 0)
             {
@@ -162,7 +159,7 @@ namespace QRcodeGenerator
         {
             ResetTextboxes();
             TurnOffAll();
-            selected();
+            Selected();
         }
 
 
@@ -170,12 +167,14 @@ namespace QRcodeGenerator
         {
             try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = "python.exe";
-                startInfo.Arguments = "--version";
-                startInfo.RedirectStandardOutput = true;
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = "python.exe",
+                    Arguments = "--version",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
 
                 using (Process process = new Process())
                 {
@@ -219,9 +218,11 @@ namespace QRcodeGenerator
             string arg1 = textBox1.Text;
             string arg2 = textBox2.Text;
             string arg3 = textBox3.Text;
+
+            //TEMP SOLUTION: seems permanent af
             string pythonScriptPath = Path.Combine(Application.StartupPath,"Scripts","qcode.py");
-            //TEMP SOLUTION:
             string argumentsFilePath = Path.Combine(Application.StartupPath,"Scripts","arguments.txt");
+
             File.WriteAllText(argumentsFilePath, $"{arg1} {arg2} {arg3}");
             string argumentsContent = $"{arg1} {arg2} {arg3}";
             using (Process process = new Process())
@@ -234,13 +235,10 @@ namespace QRcodeGenerator
                 process.StartInfo.RedirectStandardError = true;
 
                 process.Start();
-
-
-
                 process.WaitForExit();
 
                 QrCodeShowBox();
-                
+
                 ResetTextboxes();
             }
 
