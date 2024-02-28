@@ -10,6 +10,12 @@
 *.userosscache
 *.sln.docstates
 
+# MyFiles
+QRcodeGenerator.exe
+QRcodeGenerator.exe.config
+QRcodes/
+
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
