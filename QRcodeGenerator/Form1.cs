@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace QRcodeGenerator
@@ -78,7 +79,7 @@ namespace QRcodeGenerator
 
                     displayForm.ClientSize = new Size(imageWidth, imageHeight);
                     displayForm.ShowDialog();
-
+                    
                 }
                 try
                 {
@@ -216,16 +217,17 @@ namespace QRcodeGenerator
                     MessageBox.Show("Python is not installed on your machine.");
                 }
 
-                string arg1 = textBox1.Text;
-                string arg2 = textBox2.Text;
-                string arg3 = textBox3.Text;
+                string arg1 = comboBox2.SelectedIndex.ToString();
+                string arg2 = textBox1.Text;
+                string arg3 = textBox2.Text;
+                string arg4 = textBox3.Text;
 
                 //TEMP SOLUTION: seems permanent af
                 string pythonScriptPath = Path.Combine(Application.StartupPath, "Scripts", "qcode.py");
                 string argumentsFilePath = Path.Combine(Application.StartupPath, "Scripts", "arguments.txt");
 
-                File.WriteAllText(argumentsFilePath, $"{arg1} {arg2} {arg3}");
-                string argumentsContent = $"{arg1} {arg2} {arg3}";
+                File.WriteAllText(argumentsFilePath, $"{arg1} {arg2} {arg3} {arg4}");
+                string argumentsContent = $"{arg1} {arg3} {arg3} {arg4}";
                 using (Process process = new Process())
                 {
                     process.StartInfo.FileName = "python.exe";
