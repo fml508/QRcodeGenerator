@@ -71,7 +71,7 @@ def delete_old_qr_code(scheduler, delay, finalfilename):
 if __name__ == "__main__":
     #t.sleep(1)
     
-    
+        
     arg1 = sys.argv[1] if len(sys.argv) > 1 else ""
     arg2 = sys.argv[2] if len(sys.argv) > 2 else ""
     arg3 = sys.argv[3] if len(sys.argv) > 3 else ""
