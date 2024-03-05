@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <GenerateResourceMSBuildArchitecture>CurrentArchitecture</GenerateResourceMSBuildArchitecture>
@@ -49,13 +50,11 @@
   </ItemGroup>
   <Target Name="CreatePythonFolders" AfterTargets="Build">
     <MakeDir Directories="$(OutputPath)\Scripts" />
-    <MakeDir Directories="$(OutputPath)\QRcodes"/>
+    <MakeDir Directories="$(OutputPath)\QRcodes" />
   </Target>
   <Target Name="CopyPythonFiles" AfterTargets="CreatePythonFolders">
-    <Copy SourceFiles="..\Scripts\qcode.py;..\Scripts\Setup.py"
-          DestinationFolder="$(OutputPath)\Scripts" />
+    <Copy SourceFiles="..\Scripts\qcode.py;..\Scripts\Setup.py" DestinationFolder="$(OutputPath)\Scripts" />
   </Target>
-
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,6 +88,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
