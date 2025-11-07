@@ -94,7 +94,7 @@ namespace QRcodeGenerator
             }
         }
 
-        private int Selected()
+        private int UpdateUiForSelection()
         {
             // A UI-t inicializáljuk a combobox aktuális értéke szerint,
             // majd visszaadjuk az aktuális selected indexet, hogy az IsReady-t meg tudjuk hívni a TextChanged eseményben is.
@@ -167,7 +167,7 @@ namespace QRcodeGenerator
         {
             ResetTextboxes();
             TurnOffAll();
-            int sel = Selected();
+            int sel = UpdateUiForSelection();
             // Miután frissítettük a UI-t, ellenőrizzük, hogy a jelenlegi állapot kész-e.
             IsReady(sel);
         }
