@@ -10,6 +10,9 @@ namespace QRcodeGenerator
     {
         private System.Windows.Forms.TextBox[] textBoxes;
 
+        // Replace magic numbers with a clear enum for the selection type.
+        private enum OptionType { None = -1, Wifi = 0, String = 1 }
+
         public Form1()
         {
             InitializeComponent();
@@ -29,8 +32,8 @@ namespace QRcodeGenerator
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            // Az IsReady most paraméterként várja a combobox selected indexet.
-            IsReady(comboBox2.SelectedIndex);
+            // Use the enum casted from SelectedIndex to avoid reading comboBox state inside IsReady.
+            IsReady((OptionType)comboBox2.SelectedIndex);
         }
 
         private void TurnOffAll()
@@ -94,17 +97,16 @@ namespace QRcodeGenerator
             }
         }
 
-        private int UpdateUiForSelection()
+        private OptionType UpdateUiForSelection()
         {
-            // A UI-t inicializáljuk a combobox aktuális értéke szerint,
-            // majd visszaadjuk az aktuális selected indexet, hogy az IsReady-t meg tudjuk hívni a TextChanged eseményben is.
-            int sel = comboBox2.SelectedIndex;
+            // Init UI according to comboBox selected index and return the semantic selection as an enum.
+            OptionType sel = (OptionType)comboBox2.SelectedIndex;
 
-            if (sel == 0)
+            if (sel == OptionType.Wifi)
             {
                 InitWIFIoption();
             }
-            else
+            else if (sel == OptionType.String)
             {
                 InitStringoption();
             }
@@ -135,26 +137,26 @@ namespace QRcodeGenerator
             textBox3.Visible = true;
         }
 
-        private void IsReady(int selectedIndex)
+        private void IsReady(OptionType selectedOption)
         {
             // Kezdetben mindig rejtjük a gombot, aztán a paraméter alapján beállítjuk.
             button1.Visible = false;
 
-            // Ha nincs kiválasztás (selectedIndex == -1), akkor ne legyen kész.
-            if (selectedIndex < 0)
+            // Ha nincs kiválasztás, akkor ne legyen kész.
+            if (selectedOption == OptionType.None)
             {
                 return;
             }
 
-            // selectedIndex == 0 => WIFI (három mező kötelező), különben STRING (egy mező elegendő)
-            if (selectedIndex == 0)
+            // WIFI (három mező kötelező) vs STRING (egy mező elegendő)
+            if (selectedOption == OptionType.Wifi)
             {
                 if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text))
                 {
                     button1.Visible = true;
                 }
             }
-            else
+            else if (selectedOption == OptionType.String)
             {
                 if (!string.IsNullOrEmpty(textBox1.Text))
                 {
@@ -167,7 +169,7 @@ namespace QRcodeGenerator
         {
             ResetTextboxes();
             TurnOffAll();
-            int sel = UpdateUiForSelection();
+            OptionType sel = UpdateUiForSelection();
             // Miután frissítettük a UI-t, ellenőrizzük, hogy a jelenlegi állapot kész-e.
             IsReady(sel);
         }
