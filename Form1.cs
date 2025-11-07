@@ -85,13 +85,15 @@ namespace QRcodeGenerator
                 }
                 try
                 {
-                    File.Delete(latestQRCodeFile);
+                    if (File.Exists(latestQRCodeFile))
+                    {
+                        File.Delete(latestQRCodeFile);
+                    }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-
-                    Console.WriteLine(e);
-                    //File.Delete(latestQRCodeFile);
+                    // Log instead of throwing — allow user to continue using the app even if cleanup fails.
+                    Debug.WriteLine($"Failed to delete temporary QR file '{latestQRCodeFile}': {ex}");
                 }
 
             }
@@ -206,13 +208,28 @@ namespace QRcodeGenerator
         private string FindLatestQRCode()
         {
             string directoryPath = Path.Combine(Application.StartupPath, "QRcodes");
-            string[] files = Directory.GetFiles(directoryPath, "BUUUUUU_*.png");
 
-
-            if (files.Length > 0)
+            // If the folder doesn't exist, return null early — nothing to show.
+            if (!Directory.Exists(directoryPath))
             {
-                Array.Sort(files);
-                return files[files.Length - 1];
+                Debug.WriteLine($"QRcodes directory not found: {directoryPath}");
+                return null;
+            }
+
+            try
+            {
+                string[] files = Directory.GetFiles(directoryPath, "BUUUUUU_*.png");
+
+                if (files.Length > 0)
+                {
+                    Array.Sort(files);
+                    return files[files.Length - 1];
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return null so the app can continue working.
+                Debug.WriteLine($"Error while searching for latest QR code: {ex}");
             }
 
             return null;
